@@ -57,7 +57,7 @@ fi
 for module in "${GITHUB[@]}" ; do
   KEY="${module%%:*}"
   VALUE="${module##*:}"
-  $GIT clone https://github.com/$KEY.git $VALUE
+  $GIT clone https://github.com/$KEY.git puppet/$VALUE
 done
 
 # Do the same for the puppet ones, but since we have a static pattern here
