@@ -1,0 +1,27 @@
+REPLACE
+* For all *.key files and *passwords.txt files:
+  Replace their contents with the contents from their stated stache entries
+
+ENCRYPT
+* Edit the encrypt.sh script and ensure that the PUBKEY is pointed properly
+* Run the encrypt.sh script to encrypt all files in ./local-secrets/data
+
+COPY
+* Move encrypted files into appropriate location in the puppet tree
+  In *most* cases the encrypted files will land in one of the following
+    ./profile/files/SERVICE/secrets
+    ./profile/files/SERVICE/keys
+    ./profile/files/SERVICE/credentials
+
+Updating the core files for your specific implementation:
+
+If any of the following core files need to be updated:
+  * bootstrap.sh
+  * Vagrantfile
+  * ./local-secrets/encrypt.sh
+  * ./local-secrets/*.pub
+
+Perform a separate checkout of this repo elsewhere and populate only
+The DEV level keys and passwords, in case of accidental commit.
+
+Proceed with updates to the core files.
