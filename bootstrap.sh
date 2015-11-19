@@ -53,18 +53,28 @@ fi
 
 # This may be bad logic, hopping out of a broken if statement above?
 
+# Do the same for the puppet ones, but since we have a static pattern here
+# we don't need any special kinds of configuration
+$SVN co --force --username $SVN_USER --password $SVN_PASS $SVN_REPO puppet
+
 # Iterate over the GITHUB array and clone the require repos
+# Additionally cat the directory names ($VALUE) into a textfile
+# For purposes of having SVN ignore the GITHUB modules
+
+# Nuke the ignore list if it currently exists
+echo '' > puppet/svn-ignore-list.txt
 for module in "${GITHUB[@]}" ; do
   KEY="${module%%:*}"
   VALUE="${module##*:}"
   $GIT clone https://github.com/$KEY.git puppet/$VALUE
+  echo $VALUE >> puppet/svn-ignore-list.txt
 done
 
-# Do the same for the puppet ones, but since we have a static pattern here
-# we don't need any special kinds of configuration
-$SVN export --username $SVN_USER --password $SVN_PASS $SVN_REPO puppet
+# Drop into the svn co and ignore the github downloaded extra modules
+cd puppet
+$SVN propset svn:ignore -F svn-ignore-list.txt .
+$SVN ci --username $SVN_USER --password $SVN_PASS \
+  -m "Ignoring files in svn-ignore-list.txt"
 
 # Start the vagrant service
-$VAGRANT up
-
-exit 0
+# $VAGRANT up
