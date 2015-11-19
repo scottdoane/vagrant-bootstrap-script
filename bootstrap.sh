@@ -62,9 +62,7 @@ done
 
 # Do the same for the puppet ones, but since we have a static pattern here
 # we don't need any special kinds of configuration
-for i in "role" "profile" "hiera"; do
-  $SVN export --username $SVN_USER --password $SVN_PASS $SVN_REPO/$i
-done
+$SVN export --username $SVN_USER --password $SVN_PASS $SVN_REPO puppet
 
 # Start the vagrant service
 $VAGRANT up
